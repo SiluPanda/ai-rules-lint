@@ -115,7 +115,7 @@ export const wallOfText: LintRule = {
       // Check for paragraphs without structural breaks
       const contentLines = section.content.split('\n');
       let consecutiveChars = 0;
-      let blockStartLine = section.location.startLine;
+      let blockStartLine = section.location.startLine + 1;
 
       for (let i = 0; i < contentLines.length; i++) {
         const line = contentLines[i].trim();
@@ -129,7 +129,7 @@ export const wallOfText: LintRule = {
 
         if (isBreak) {
           consecutiveChars = 0;
-          blockStartLine = section.location.startLine + i + 1;
+          blockStartLine = section.location.startLine + i + 2;
         } else {
           consecutiveChars += line.length;
           if (consecutiveChars > maxLength) {
@@ -138,7 +138,7 @@ export const wallOfText: LintRule = {
               location: {
                 startLine: blockStartLine,
                 startColumn: 1,
-                endLine: section.location.startLine + i,
+                endLine: section.location.startLine + i + 1,
                 endColumn: line.length + 1,
               },
               suggestion: 'Break the text into bullet points, numbered steps, or subsections.',

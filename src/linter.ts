@@ -120,7 +120,17 @@ function runLint(
       mergedOptions.projectRoot = projectRoot;
     }
 
-    rule.check(document, ruleContext, Object.keys(mergedOptions).length > 0 ? mergedOptions : undefined);
+    try {
+      rule.check(document, ruleContext, Object.keys(mergedOptions).length > 0 ? mergedOptions : undefined);
+    } catch (err) {
+      diagnostics.push({
+        ruleId: rule.id,
+        severity: 'warning',
+        category: rule.category,
+        location: { startLine: 1, startColumn: 1, endLine: 1, endColumn: 1 },
+        message: `Rule "${rule.id}" threw an error: ${err instanceof Error ? err.message : String(err)}`,
+      });
+    }
   }
 
   return { diagnostics: sortDiagnostics(diagnostics), ruleStates };
