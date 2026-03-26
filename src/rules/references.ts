@@ -83,6 +83,7 @@ export const nonexistentCommand: LintRule = {
         inCodeBlock = !inCodeBlock;
         continue;
       }
+      if (inCodeBlock) continue;
 
       // Look for npm run <script> references
       const npmRunMatches = line.matchAll(/npm\s+run\s+([\w:.-]+)/g);
